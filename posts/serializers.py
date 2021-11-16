@@ -7,4 +7,4 @@ class PostsSerializer(serializers.HyperlinkedModelSerializer):
     author = AppUserSerializer(read_only=True)
     class Meta:
         model = Posts
-        fields = ('id', 'author', 'title', 'content', 'created_at', 'updated_at')
+        fields = ('id', 'author', 'title', 'content', 'created_at', 'updated_at', 'post_likes')

@@ -1,11 +1,9 @@
 from comments.models import Comments
 from rest_framework import serializers
+from posts.serializers import PostsSerializer
 
-# from accounts.serializers import UserSerializer
-
-# class CommentsSerializer(serializers.ModelSerializer):
-#     user = UserSerializer(read_only=True)
-
-#     class Meta:
-#         model = Comments
-#         fields = ('id', 'user', 'comment', 'created_at')
+class CommentsSerializer(serializers.HyperlinkedModelSerializer):
+    post = PostsSerializer(read_only=True)
+    class Meta:
+        model = Comments
+        fields = ('id', 'post', 'comment', 'created_at', 'updated_at')
