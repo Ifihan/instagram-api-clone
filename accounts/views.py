@@ -32,3 +32,8 @@ class LoginView(GenericAPIView):
 # email authentication
 # logout view
 # password reset view
+# follow/unfollow view
+# profile
+# make profile public or private
+# make post
+# should break this into auth and acccounts app
