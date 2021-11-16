@@ -4,7 +4,7 @@ from rest_framework import serializers
 from accounts.serializers import AppUserSerializer
 
 class PostsSerializer(serializers.HyperlinkedModelSerializer):
-    author = AppUserSerializer(read_only=True)
+    user = AppUserSerializer(read_only=True)
     class Meta:
         model = Posts
-        fields = ('id', 'author', 'title', 'content', 'created_at', 'updated_at', 'post_likes')
+        fields = ['id', 'user', 'caption', 'images', 'post_likes']

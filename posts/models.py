@@ -11,7 +11,7 @@ class Images(models.Model):
 class Posts(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     caption = models.CharField(max_length=200)
-    image = models.ForeignKey(Images, on_delete=models.CASCADE)
+    images = models.ForeignKey(Images, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     post_likes = models.IntegerField(default=0)

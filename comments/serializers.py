@@ -6,4 +6,4 @@ class CommentsSerializer(serializers.HyperlinkedModelSerializer):
     post = PostsSerializer(read_only=True)
     class Meta:
         model = Comments
-        fields = ('id', 'post', 'comment', 'created_at', 'updated_at')
+        fields = ['id', 'post', 'comment']

@@ -10,7 +10,7 @@ from comments.serializers import CommentsSerializer
 # Create your views here.
 
 class CommentsView(APIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):
         comments = Comments.objects.all()
         serializer = CommentsSerializer(comments, many=True)
