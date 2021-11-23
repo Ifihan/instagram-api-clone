@@ -4,7 +4,7 @@ from accounts.models import AppUser
 # Create your models here.
 
 class Images(models.Model):
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='posts')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

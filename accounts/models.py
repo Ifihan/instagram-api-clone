@@ -20,6 +20,6 @@ class AppUser(models.Model):
     def token(self):
         refresh = RefreshToken.for_user(self)
         return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
+            'refresh': refresh,
+            'access': refresh.access_token,
         }
