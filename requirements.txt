@@ -1,0 +1,11 @@
+asgiref==3.4.1; python_version >= "3.8"
+django-rest-framework==0.1.0
+django==4.0; python_version >= "3.8"
+djangorestframework-simplejwt==5.0.0; python_version >= "3.7"
+djangorestframework==3.13.1; python_version >= "3.7"
+pillow==8.4.0; python_version >= "3.6"
+pyjwt==2.3.0; python_version >= "3.7"
+python-dotenv==0.19.2; python_version >= "3.5"
+pytz==2021.3; python_version >= "3.7"
+sqlparse==0.4.2; python_version >= "3.8"
+tzdata==2021.5; sys_platform == "win32" and python_version >= "3.8"
