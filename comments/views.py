@@ -1,13 +1,10 @@
-from django.shortcuts import render
-
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from comments.models import Comments
-from comments.serializers import CommentsSerializer
-# Create your views here.
+from .serializers import Comments, CommentsSerializer
+
 
 class CreateCommentView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -19,6 +16,7 @@ class CreateCommentView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ListCommentView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
@@ -26,6 +24,7 @@ class ListCommentView(APIView):
         comments = Comments.objects.all()
         serializer = CommentsSerializer(comments, many=True)
         return Response(serializer.data)
+
 
 class UpdateCommentView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -38,6 +37,7 @@ class UpdateCommentView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class DeleteCommentView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -45,5 +45,6 @@ class DeleteCommentView(APIView):
         comment = Comments.objects.get(pk=pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # liked comments feed view

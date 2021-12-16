@@ -1,7 +1,6 @@
 from django.db import models
 from rest_framework_simplejwt.tokens import RefreshToken
 
-# Create your models here.
 
 class AppUser(models.Model):
     username = models.CharField(max_length=100)
@@ -20,6 +19,6 @@ class AppUser(models.Model):
     def token(self):
         refresh = RefreshToken.for_user(self)
         return {
-            'refresh': refresh,
-            'access': refresh.access_token,
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
         }
