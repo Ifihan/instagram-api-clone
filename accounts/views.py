@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from accounts.models import AppUser
-from accounts.serializers import LoginSerializer, RegistrationSerializer
+from accounts.serializers import LoginSerializer, RegistrationSerializer, AppUserSerializer
 
 
 # Create your views here.
@@ -33,6 +33,15 @@ class LoginView(GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(self.get_token(serializer.data), status=status.HTTP_200_OK)
+
+
+class AuthUserDataView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        serializer = AppUserSerializer(user)
+        return Response(serializer.data)
 
 
 # class MakeUserPrivateView(APIView):
