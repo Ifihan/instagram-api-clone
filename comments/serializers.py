@@ -1,12 +1,12 @@
 from posts.serializers import PostsSerializer
 from rest_framework import serializers
 
-from .models import Comments
+from .models import Comment
 
 
 class CommentsSerializer(serializers.HyperlinkedModelSerializer):
     post = PostsSerializer(read_only=True)
 
     class Meta:
-        model = Comments
+        model = Comment
         fields = ["id", "post", "comment"]

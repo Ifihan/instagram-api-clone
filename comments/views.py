@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import Comments, CommentsSerializer
+from .serializers import Comment, CommentsSerializer
 
 
 class CreateCommentView(APIView):
@@ -21,7 +21,7 @@ class ListCommentView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
-        comments = Comments.objects.all()
+        comments = Comment.objects.all()
         serializer = CommentsSerializer(comments, many=True)
         return Response(serializer.data)
 
@@ -30,7 +30,7 @@ class UpdateCommentView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def put(self, request, pk):
-        comment = Comments.objects.get(pk=pk)
+        comment = Comment.objects.get(pk=pk)
         serializer = CommentsSerializer(comment, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -42,7 +42,7 @@ class DeleteCommentView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def delete(self, request, pk):
-        comment = Comments.objects.get(pk=pk)
+        comment = Comment.objects.get(pk=pk)
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
