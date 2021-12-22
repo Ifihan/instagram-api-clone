@@ -1,19 +1,31 @@
-from posts.models import Posts, Images
+from posts.models import Post, Image
 from rest_framework import serializers
 
 from accounts.models import AppUser
 from accounts.serializers import AppUserSerializer
 
-class PostsSerializer(serializers.HyperlinkedModelSerializer):
-    user = AppUserSerializer(read_only=True)
-
-    def create(self, validated_data):
-        image_data = self.context.get("request").FILES.get("attachment")
-        current_user = AppUser.objects.first()
-        validated_data.update({"user_id": current_user.id})
-
-        
+class ImageSerializer(serializers.ModelSerializer):
+    image_url = serializers.ReadOnlyField()
 
     class Meta:
-        model = Posts
-        fields = ['id', 'user', 'caption', 'images', 'post_likes']
+        model = Image
+        fields = ['image_url']
+
+class PostsSerializer(serializers.HyperlinkedModelSerializer):
+    user = AppUserSerializer(read_only=True)
+    post_images = ImageSerializer(many=True, read_only=True, source="images")
+
+    def create(self, validated_data):
+        image_data = self.context.get("request").FILES.getlist("file")
+        current_user = AppUser.objects.first()
+        validated_data.update({"user_id": current_user.id})
+        post = Post.objects.create(**validated_data)
+        for image in image_data:
+            Image.objects.create(post=post, file=image)
+
+        print(post.images)
+        return post
+
+    class Meta:
+        model = Post
+        fields = ['id', 'user', 'caption', "post_images"]

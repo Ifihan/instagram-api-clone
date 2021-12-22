@@ -1,20 +1,23 @@
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from posts.models import Posts
+from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
+
+from posts.models import Post
 from posts.serializers import PostsSerializer
 
 
 # Create your views here.
-class CreatePostView(APIView):
-    permission_classes = (IsAuthenticated,)
-    parser_classes = [MultiPartParser]
+class CreatePostView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+    serializer_class = PostsSerializer
 
     def post(self, request, format=None):
-        serializer = PostsSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -26,20 +29,20 @@ class ReadPostView(APIView):
 
     def get(self, request, pk, format=None):
         try:
-            post = Posts.objects.get(pk=pk)
-        except Posts.DoesNotExist:
+            post = Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = PostsSerializer(post)
         return Response(serializer.data)
 
 
 class UpdatePostView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
-            return Posts.objects.get(pk=pk)
-        except Posts.DoesNotExist:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk, format=None):
@@ -56,8 +59,8 @@ class DeletePostView(APIView):
 
     def get_object(self, pk):
         try:
-            return Posts.objects.get(pk=pk)
-        except Posts.DoesNotExist:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, pk, format=None):
