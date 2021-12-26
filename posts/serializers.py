@@ -26,6 +26,10 @@ class PostsSerializer(serializers.HyperlinkedModelSerializer):
         print(post.images)
         return post
 
+    def delete(self, validated_data):
+        post = Post.objects.all(pk=validated_data.get("id"))
+        post.delete()
+        return post
     class Meta:
         model = Post
         fields = ['id', 'user', 'caption', "post_images"]

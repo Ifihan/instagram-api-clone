@@ -2,9 +2,12 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
+
+from django.http import Http404
 
 from posts.models import Post
 from posts.serializers import PostsSerializer
@@ -61,15 +64,25 @@ class DeletePostView(APIView):
         try:
             return Post.objects.get(pk=pk)
         except Post.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise Http404("Not found")
 
     def delete(self, request, pk, format=None):
         post = self.get_object(pk)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class LikePostview(APIView):
+    permission_classes = [IsAuthenticated,]
+
+    def get_object(self, request, pk, format=None):
+        post = Post.objects.get(pk=pk)
+        user = self.request.user
+        if user in post.likes.all():
+            post.likes.remove(user)
+        else:
+            post.likes.add(user)
+            return Response(status=status.HTTP_200_OK)
+
 
 # class BookmarkPost
-
-# liked posts feed view
 # bookamrk posts
