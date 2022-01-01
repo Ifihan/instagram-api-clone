@@ -37,7 +37,6 @@ class UpdateCommentView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class DeleteCommentView(APIView):
     permission_classes = (IsAuthenticated,)
 
