@@ -31,7 +31,14 @@ class LoginView(GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        return Response(self.get_token(serializer.data), status=status.HTTP_200_OK)
+        return Response(self.get_token(serializer.data), status=status.HTTP_200_OK)\
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
 
 class UserProfileView(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
@@ -39,8 +46,8 @@ class UserProfileView(RetrieveAPIView):
 
     queryset = AppUser.objects.all()
 
-
-
+    def get_object(self):
+        return self.request.user
 
 # class MakeUserPrivateView(APIView):
 #     permission_classes = (IsAuthenticated,)
@@ -48,8 +55,6 @@ class UserProfileView(RetrieveAPIView):
 
 # email authentication
 # logout view
-# password reset view
 # follow/unfollow view
 # make profile public or private
 # make post
-# should break this into auth and acccounts app
